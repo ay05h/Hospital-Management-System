@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Landing Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#">Hospital Management System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('doctor_update_profile') }}">Update Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('doctor_password') }}">Change Password</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('doctor_appointments') }}">View Appointments</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="view_patients.html">View Patients</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('delete_account') }}" onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">Delete Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h2 class="text-center">Welcome, Dr. {{ first_name }} {{ last_name }}</h2>
+        <p class="text-center">Your User ID is: <strong>{{ user_id }}</strong></p>
+        <p class="text-center">Doctor ID: <strong>{{ doctor_id }}</strong></p>
+        
+        <h4 class="mt-4">Personal Information</h4>
+        <div class="card mb-4">
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item">Full Name: Dr. {{ first_name }} {{ last_name }}</li>
+                    <li class="list-group-item">Specialization: {{ specialization }}</li>
+                    <li class="list-group-item">Department: {{ department }}</li>
+                    <li class="list-group-item">Email: {{ email }}</li>
+                    <li class="list-group-item">Contact Number: {{ contact_number }}</li>
+                </ul>
+            </div>
+        </div>
+
+        <h4>Address</h4>
+        <div class="card mb-4">
+            <div class="card-body">
+                <p>{{ address.street }}, {{ address.city }}, {{ address.state }} - {{ address.zipcode }}</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

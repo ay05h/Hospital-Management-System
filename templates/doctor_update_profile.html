@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Doctor Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <h2 class="text-center">Update Doctor Profile</h2>
+    <form action="doctor_update_profile" method="POST" class="mt-4" id="doctor-update-form">
+        <div class="mb-3">
+            <label for="first_name" class="form-label">First Name <span class="text-danger">*</span></label>
+            <input type="text" name="first_name" id="first_name" class="form-control" value="{{ first_name }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="last_name" class="form-label">Last Name <span class="text-danger">*</span></label>
+            <input type="text" name="last_name" id="last_name" class="form-control" value="{{ last_name }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+            <input type="email" name="email" id="email" class="form-control" value="{{ email }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="department" class="form-label">Department <span class="text-danger">*</span></label>
+            <select id="department" name="department" class="form-select" required>
+                <option value="">Select Department</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="specialization" class="form-label">Specialization <span class="text-danger">*</span></label>
+            <select id="specialization" name="specialization_id" class="form-select" required>
+                <option value="">Select Specialization</option>
+            </select>
+        </div>
+
+        <h5 class="mt-4">Address Details</h5>
+        <div class="mb-3">
+            <label for="street" class="form-label">Street</label>
+            <input type="text" name="street" id="street" class="form-control" value="{{ address.street }}">
+        </div>
+
+        <div class="mb-3">
+            <label for="city" class="form-label">City</label>
+            <input type="text" name="city" id="city" class="form-control" value="{{ address.city }}">
+        </div>
+
+        <div class="mb-3">
+            <label for="state" class="form-label">State</label>
+            <input type="text" name="state" id="state" class="form-control" value="{{ address.state }}">
+        </div>
+
+        <div class="mb-3">
+            <label for="zipcode" class="form-label">Zip Code</label>
+            <input type="text" name="zipcode" id="zipcode" class="form-control" value="{{ address.zipcode }}">
+        </div>
+
+        <button type="submit" class="btn btn-success w-100">Update Profile</button>
+    </form>
+</div>
+
+<script>
+    window.addEventListener('load', async () => {
+        const departmentResponse = await fetch('/api/departments');
+        const departments = await departmentResponse.json();
+        const departmentSelect = document.getElementById('department');
+
+        // Populate departments
+        departmentSelect.innerHTML = departments.map(dept =>
+            `<option value="${dept.id}" ${dept.id == "{{ department.id }}" ? 'selected' : ''}>${dept.name}</option>`
+        ).join('');
+
+        const specializationSelect = document.getElementById('specialization');
+        await loadSpecializations("{{ department.id }}", "{{ specialization.id }}"); 
+
+        departmentSelect.addEventListener('change', async function () {
+            await loadSpecializations(this.value);
+        });
+    });
+
+    async function loadSpecializations(departmentID, selectedID = null) {
+        const specializationSelect = document.getElementById('specialization');
+        const response = await fetch(`/api/specializations?departmentID=${departmentID}`);
+        const specializations = await response.json();
+
+        specializationSelect.innerHTML = specializations.map(spec =>
+            `<option value="${spec.id}" ${spec.id == selectedID ? 'selected' : ''}>${spec.name}</option>`
+        ).join('');
+    }
+</script>
+</body>
+</html>
